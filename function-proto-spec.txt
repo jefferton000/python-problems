@@ -1,8 +1,8 @@
-# Randomly generate strings toward the goal string: "methinks it is a weasel"
+# Randomly generate strings toward the goal string: "methinks it is like a weasel"
 # Proto-specification thoughts
 
 globals?:
- goal string = "methinks it is a weasel"
+ goal string = "methinks it is like a weasel"
  current string = "???"
  character limit = 27?
  string limit = 1000
@@ -38,7 +38,7 @@ fill string to character limit, incrementally
 
 
 
-scoring string
+score the string
 ----------------------------------
 def score(current_string):
 	ch_found = 0
