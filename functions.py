@@ -35,24 +35,25 @@ def generate():
 					best_percent = next_percent
 					best_string = next_string
 			generation_count += 1
-
+"""
 		# "Hill climbing", make into own function? use char_list or char_count?
 		new_list = list(new_string( len(shorterlist) ))
 		index = len(new_list)
 		start = len(goal_string) - index
 
-		for letter not in new_list:
-			get index and store into another list			
 		#  decrease # of chars to be generated, based on last correct index position
 		#  correct from start to index, but not from index to end
 		for index, val in enumerate(list(char_list), start = len(goal_string) - index):
 			print i, val
+                # OR
+		for letter not in new_list:
+			get index and store into another list			
 
 		#if more characters are found (higher score)
 		if found_count > not_found_count
 			char_list = new_string(char_count) # char_count decreases
 			char_list = list(current_string)
-
+"""
 
 # Random string generator
 # based on number of chars entered
