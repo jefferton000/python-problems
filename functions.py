@@ -6,77 +6,80 @@ goal_string = "methinks it is like a weasel"
 
 # "main" function
 def generate():
-	current_string = ""
 	string_list = []
 	string_list_limit = 1000
 	generation_count = 0           # generation = every 1000
-	char_count = len(goal_string)  # decrements every generation count
-	correction_index = 0           # position from 0-27
 	done = False                   # program sentinel
-	found_count = 0
-	not_found_count = len(goal_string)
+	char_count = len(goal_string)  # decrements every generation coun
+
+	percent = 0
+	next_percent = 0
+	best_percent = 0
+
+	string = ""
+	next_string = ""
+	best_string = ""
 
 	# Generate and score 10 generations of 1000 strings
 	while not done and generation_count < 10:
 		if len(string_list) < string_list_limit:
-			current_string = new_string()
-			string_list.append(current_string)
-			current_score = score(current_string)
+			current_string = new_string(char_count) # default length
+			string_list.append(current_string)			
 		else:
+			# keep best percentage, scoring list
 			for string in string_list:
-				highest_score = current_score #?
-				best_string = current_string  #?
+				percent = score(string)
+				next_percent = score(string_list.next())
+				next_string = score(string_list.next())
+				if percent < next_percent
+					best_percent = next_percent
+					best_string = next_string
 			generation_count += 1
 
-		# "Hill climbing", generalize string generation, decrease # of chars to be generated.
-		if more characters are found[higher score] (and are correct from start to index):
-			current_string = new_string(char_count)
-			# gradually generate less characters, based on the last index they were correct
-			beginning(index=start to end)
-			middle(index to end)
-			end(index=end)
-			(good from start to index, but not from index to end)
+		# "Hill climbing", make into own function? use char_list or char_count?
+		new_list = list(new_string( len(shorterlist) ))
+		index = len(new_list)
+		start = len(goal_string) - index
+
+		for letter not in new_list:
+			get index and store into another list			
+		#  decrease # of chars to be generated, based on last correct index position
+		#  correct from start to index, but not from index to end
+		for index, val in enumerate(list(char_list), start = len(goal_string) - index):
+			print i, val
+
+		#if more characters are found (higher score)
+		if found_count > not_found_count
+			char_list = new_string(char_count) # char_count decreases
+			char_list = list(current_string)
 
 
 # Random string generator
+# based on number of chars entered
 def new_string(num_chars):
-
-	# append needed amount to new list
-	char_list = []
-	#fill string to character limit w/ random chars, appending incrementally
-	for 
 	alphabet = "abcdefghijklmnopqrstuvwxyz "
-	random.choice(string.letters())
+	char_list = []
 
-	generated as letterlist
+	# generate list to character limit w/ random chars,
+	# appending incrementally
+	for i in num_chars:
+		char_list.append(random.choice( alphabet ))
 
-	stored as string
-
-	checked as letterlist
-
+	#shorter: return ''.join(char_list)
+	gen_string = ''.join(char_list)
 	return gen_string
+
 
 
 # Score the string
 def score(string):
 	ch_found = 0
-	ch_not_found = 0
 	percent = 0
 
-	# for length in len(goal_string):
-	
-	for letter in goal:
-		if letter not in string:
-			not_found += 1
-			print ("%s letters not found" (not_found))
-		else:
-			found += 1
-			print ("%s letters found" (found))
-
 	# compare score with 100 for remainder
-	if found % str_limit == 0:
+	if ch_found % len(goal_string) == 0:
 		percent = 100
 	else:
-		percent = ch_found / ch_not_found
+		percent = ch_found / len(goal_string)
 
 	return percent
