@@ -1,40 +1,34 @@
 #!/usr/bin/python
 # Randomly generate strings toward the goal string: "methinks it is like a weasel"
-
-# Globals variables
+import random
 goal_string = "methinks it is like a weasel"
-
+string_list_limit = 1000
+	
 # "main" function
 def generate():
 	string_list = []
-	string_list_limit = 1000
-	generation_count = 0           # generation = every 1000
-	done = False                   # program sentinel
+	generation_count = 0
 	char_count = len(goal_string)  # decrements every generation coun
 
-	percent = 0
-	next_percent = 0
-	best_percent = 0
-
-	string = ""
-	next_string = ""
-	best_string = ""
-
 	# Generate and score 10 generations of 1000 strings
-	while not done and generation_count < 10:
+	# Initial Testing: only use one generation
+	while generation_count < 10:
 		if len(string_list) < string_list_limit:
 			current_string = new_string(char_count) # default length
 			string_list.append(current_string)			
 		else:
 			# keep best percentage, scoring list
-			for string in string_list:
-				percent = score(string)
-				next_percent = score(string_list.next())
-				next_string = score(string_list.next())
+			for string in string_list:			# declare
+				percent = score(string)         # declare
+				next_percent = score(string_list.next())  # declare
+				next_string = score(string_list.next())	  # declare
 				if percent < next_percent
-					best_percent = next_percent
-					best_string = next_string
+					best_percent = next_percent # declare
+					best_string = next_string   # declare
 			generation_count += 1
+			#string_list = [] ==> Use when generation > 1
+
+
 """
 		# "Hill climbing", make into own function? use char_list or char_count?
 		new_list = list(new_string( len(shorterlist) ))
@@ -55,27 +49,29 @@ def generate():
 			char_list = list(current_string)
 """
 
-# Random string generator
-# based on number of chars entered
+# Random string generator based on number of chars entered
 def new_string(num_chars):
 	alphabet = "abcdefghijklmnopqrstuvwxyz "
+	gen_string = ""
 	char_list = []
 
 	# generate list to character limit w/ random chars,
-	# appending incrementally
-	for i in num_chars:
+	for i in range(num_chars):
 		char_list.append(random.choice( alphabet ))
 
-	#shorter: return ''.join(char_list)
 	gen_string = ''.join(char_list)
 	return gen_string
-
 
 
 # Score the string
 def score(string):
 	ch_found = 0
 	percent = 0
+	
+	# compare string with goal string, might need index: enum?
+	for letter in goal_string:
+		if letter in string:
+			ch_found += 1
 
 	# compare score with 100 for remainder
 	if ch_found % len(goal_string) == 0:
