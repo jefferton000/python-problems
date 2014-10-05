@@ -22,7 +22,7 @@ def generate():
 				percent = score(string)         # declare
 				next_percent = score(string_list.next())  # declare
 				next_string = score(string_list.next())	  # declare
-				if percent < next_percent
+				if percent < next_percent:
 					best_percent = next_percent # declare
 					best_string = next_string   # declare
 			generation_count += 1
@@ -64,19 +64,21 @@ def new_string(num_chars):
 
 
 # Score the string
+# String lengths must match, otherwise:
+#   if index < len(string) and string[index] == goal_string[index]:
+# Returns an integer representation of percentage
 def score(string):
-	ch_found = 0
+	found = 0
+        goal = len(goal_string)
 	percent = 0
 	
-	# compare string with goal string, might need index: enum?
-	for letter in goal_string:
-		if letter in string:
-			ch_found += 1
+        for index, item in enumerate(goal_string):
+                if string[index] == goal_string[index]:
+                        found += 1
+                        print item,
+                else:
+                        print "[]",
 
-	# compare score with 100 for remainder
-	if ch_found % len(goal_string) == 0:
-		percent = 100
-	else:
-		percent = ch_found / len(goal_string)
-
-	return percent
+        percent = int(round(float(found) / float(goal), 2) * 100)
+	
+        return percent
