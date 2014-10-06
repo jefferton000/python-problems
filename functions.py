@@ -7,49 +7,44 @@ string_list_limit = 1000
 # "main" function
 def generate():
 	string_list = []
-	generation_count = 0
-	char_count = len(goal_string)  # decrements every generation coun
+	string_index = 0
+	char_count = len(goal_string)
+	goal_index = 0 # persistent location for new reduced string
 
-	# Generate and score 10 generations of 1000 strings
-	# Initial Testing: only use one generation
-	while generation_count < 10:
-		if len(string_list) < string_list_limit:
-			current_string = new_string(char_count) # default length
-			string_list.append(current_string)			
-		else:
-			# keep best percentage, scoring list
-			for string in string_list:			# declare
-				percent = score(string)         # declare
-				next_percent = score(string_list.next())  # declare
-				next_string = score(string_list.next())	  # declare
-				if percent < next_percent:
-					best_percent = next_percent # declare
-					best_string = next_string   # declare
-			generation_count += 1
-			#string_list = [] ==> Use when generation > 1
+	while len(string_list) < string_list_limit:
+		# Generate new string to list
+		random_string = new_string(char_count)
+		string_list.append(random_string)
 
+		# "Hill climbing"
+		# Check each character, save index and reduce characters 
+		for index, val in enumerate(string):
+			if random_string[index] == goal_string[index]:
+				char_count -= 1
+				goal_index += 1             # for character list
+				best_string = random_string
+			else:
+				break # stop matching
 
-"""
-		# "Hill climbing", make into own function? use char_list or char_count?
-		new_list = list(new_string( len(shorterlist) ))
-		index = len(new_list)
-		start = len(goal_string) - index
+		string_index += 1
 
-		#  decrease # of chars to be generated, based on last correct index position
-		#  correct from start to index, but not from index to end
-		for index, val in enumerate(list(char_list), start = len(goal_string) - index):
-			print i, val
-                # OR
-		for letter not in new_list:
-			get index and store into another list			
+	# Score list for best string, using older way of indexing
+	best_percent = 0
+	best_string = ""
+	for index, string in enumerate(string_list):			
+		percent = score(string_list[index])
+		next_percent = score([string_list[index+1])
+		if percent < next_percent:
+			best_percent = next_percent
+			best_string = string_list[index+1]
 
-		#if more characters are found (higher score)
-		if found_count > not_found_count
-			char_list = new_string(char_count) # char_count decreases
-			char_list = list(current_string)
-"""
+	print "Result: ", best_string, best_percent
 
-# Random string generator based on number of chars entered
+				
+					
+# Random string generator 
+# Input: specified number of chars
+# Output: randomly generated string from specified length
 def new_string(num_chars):
 	alphabet = "abcdefghijklmnopqrstuvwxyz "
 	gen_string = ""
@@ -69,16 +64,13 @@ def new_string(num_chars):
 # Returns an integer representation of percentage
 def score(string):
 	found = 0
-        goal = len(goal_string)
+	goal = len(goal_string)
 	percent = 0
 	
-        for index, item in enumerate(goal_string):
-                if string[index] == goal_string[index]:
-                        found += 1
-                        print item,
-                else:
-                        print "[]",
+	for index, item in enumerate(goal_string):
+		if string[index] == goal_string[index]:
+			found += 1
 
-        percent = int(round(float(found) / float(goal), 2) * 100)
+	percent = int(round(float(found) / float(goal), 2) * 100)
 	
-        return percent
+	return percent
