@@ -248,7 +248,7 @@ class HalfAdder(BinaryGate):
 # Incomplete
 class FullAdder(HalfAdder):
 	"""
-	Extended HalfAdder into 8-bit full-adder: AdderTest()
+	Extend HalfAdder into 8-bit full-adder: AdderTest()
 	"""
 
 #def AdderTest():
