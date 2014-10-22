@@ -17,8 +17,8 @@ class LogicGate:
 class BinaryGate(LogicGate):
 	"""
 	Operates on two inputs to produce one output.
-	Gathers external input from user or gate
-	Sets up which pins will receive input
+	Gathers external input from user or gate.
+	Sets up which pins will receive input.
 	"""
 	def __init__(self,n):
 		LogicGate.__init__(self,n)
@@ -228,30 +228,60 @@ def GateTest():
 	print "2nd: ", b
 
 
-# Incomplete
 class HalfAdder(BinaryGate):	
 	"""
 	The most simple arithmetic circuit.
 	2 inputs => 2 outputs
 	"""
 	def __init__(self, n):
-	   g1 = XorGate(self)	   
-	   g2 = AndGate(self)
+		BinaryGate.__init__(self, n)
+		self.xorOut = None
+		self.andOut = None
 
 	def performGateLogic(self):
-		c1 = Connector(g1,g2)
-		c2 = Connector(g1,g3)
-		print(g1.getOutput())
-		print(g2.getOutput())
+		g1 = XorGate("G1")
+		g2 = AndGate("G2")
+		self.xorOut = g1.getOutput()
+		self.andOut = g2.getOutput()
+
+	def getXor(self):
+		return self.xorOut
+
+	def getAnd(self):
+		return self.andOut
 
 
-# Incomplete
+# Untested
 class FullAdder(HalfAdder):
 	"""
 	Extend HalfAdder into 8-bit full-adder: AdderTest()
+	3 inputs => 2 outputs
 	"""
+	def __init__(self, n):
+		HalfAdder.__init__(self, n)
+		self.sum = None
+		self.carry = None
 
-#def AdderTest():
+		self.a1 = HalfAdder("A1")
+		self.a2 = HalfAdder("A2")
+		self.g1 = OrGate("G1")
+	#Incomplete
+	def performGateLogic(self):
+		c1 = Connector(a1,a2)
+		c2 = Connector(a2,g1)
+		c2 = Connector(a1,g1)
+		self.sum = g1.getOutput()
+		self.carry = a2.getOutput()
+
+	def getSum(self):
+		return self.sum
+
+	def getCarry(self):
+		return self.carry
+
+# Incomplete
+#def AdderTest()
+
 
 """
 ========================================================
@@ -270,3 +300,4 @@ Modify the implementation so that the action is in the forward direction;
 
 ========================================================
 """
+# consider making Setters for input, as opposed to getOutput() heirarchy
