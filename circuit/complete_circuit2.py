@@ -73,7 +73,7 @@ class OrGate(BinaryGate):
 	def performGateLogic(self):
 		a = self.getPinA()
 		b = self.getPinB()
-		if a ==1 or b==1:
+		if a==1 or b==1:
 			return 1
 		else:
 			return 0
@@ -99,6 +99,18 @@ class UnaryGate(LogicGate):
 		else:
 			print("Cannot Connect: NO EMPTY PINS on this gate")
 
+class BufferGate(UnaryGate):
+	"""
+	Produces same output as input
+	"""
+	def __init__(self,n):
+		UnaryGate.__init__(self,n)
+
+	def performGateLogic(self):
+		if self.getPin():
+			return 1
+		else:
+			return 0
 
 class NotGate(UnaryGate):
 	"""
@@ -116,7 +128,8 @@ class NotGate(UnaryGate):
 
 class Connector:
 	"""
-	Used to compose I/O between each gate.
+	Used to compose I/O between each gate, only uses gate-to-gate interfacing.
+	Possibly modify to interface I/O directly.
 	"""
 	def __init__(self, fgate, tgate):
 		self.fromgate = fgate
@@ -239,11 +252,12 @@ class HalfAdder(BinaryGate):
 		self.andOut = None
 
 	def performGateLogic(self):
-		g1 = XorGate("G1")
-		g2 = AndGate("G2")
+		g1 = XorGate("G1") # how to reach (using setters? setNextPin()?)?
+		g2 = AndGate("G2") # how to reach (using setters? setNextPin()?)?
 		self.xorOut = g1.getOutput()
 		self.andOut = g2.getOutput()
 
+	# can connector handle strict I/O or only gates?
 	def getXor(self):
 		return self.xorOut
 
@@ -260,18 +274,34 @@ class FullAdder(HalfAdder):
 	def __init__(self, n):
 		HalfAdder.__init__(self, n)
 		self.sum = None
-		self.carry = None
-
+		self.carry_out = None
+		self.b1 = BufferGate("B1") # get input for carry input
 		self.a1 = HalfAdder("A1")
 		self.a2 = HalfAdder("A2")
 		self.g1 = OrGate("G1")
+
 	#Incomplete
 	def performGateLogic(self):
-		c1 = Connector(a1,a2)
+		a1.getOutput()        # performGateLogic sets gate output variables
+		#consider making a BufferGate(UnaryGate)
+		carry_in = b1.getPin()# connect to both a2(xor, and)
+
+		a1.getXor()           # connect to both a2(xor, and)
+		a1.getAnd()           # connect to g1
+		a2.getXor()           # set self.sum
+		a2.getAnd()           # connect to g1.carry_out
+
+		self.carry_out = g1.getOutput() # set self.carry_out
+		self.sum = a2.getXor()          # set self.sum
+
+		# Connect where needed.
+		#test this: consider modifying Connector?
+		# c = Connector(b1, a2.setAnd().setPinA())
+		# c = Connector(b1, a2.setXor().setPinA())
+		c1 = Connector(b1,a2)
 		c2 = Connector(a2,g1)
-		c2 = Connector(a1,g1)
-		self.sum = g1.getOutput()
-		self.carry = a2.getOutput()
+		c3 = Connector(a1,g1)
+
 
 	def getSum(self):
 		return self.sum
